@@ -31,7 +31,11 @@ function App() {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    PeopleController.save(dados).then(() => listRef.current.refresh());
+    if (dados._links != undefined) {
+      PeopleController.update(dados).then(() => listRef.current.refresh());
+    } else {
+      PeopleController.save(dados).then(() => listRef.current.refresh());
+    }
   }
 
   //funcao para identificar quando a tela é carregada
@@ -46,7 +50,34 @@ function App() {
   const listRef = useRef();
 
   const editPerson = (data) => {
-    console.log(data)
+    console.log(data);
+    //como o json que vem do server é exatamente igual ao json do nosso state basta:
+    setDados(data);
+
+    //caso não fosse teríamos que fazer conversões
+    /*setDados({
+      firstName:data.nome,
+      lastName:data.sobrenome,
+      cpf:data.cpf
+    })*/
+  }
+
+  const deletePerson = () => {
+    PeopleController.remove(dados).then(()=> {
+      listRef.current.refresh();
+      clearForm();
+    });
+  }
+
+  const clearForm = () => {
+    setDados({
+      'firstName':'',
+      'lastName':'', 
+      'email':'', 
+      'cpf':'318.157.820-72', 
+      'address':{'street':'', 
+              'city':''}
+    });
   }
 
   return (
@@ -89,6 +120,10 @@ function App() {
 
           <div className="row p-3">
             <button className="btn btn-primary col-sm-6">Salvar</button>
+
+            {dados._links && 
+              <button type="button" className="btn btn-danger col-sm-6" onClick={deletePerson}>Deletar</button>
+            }
           </div>
 
         </div>
