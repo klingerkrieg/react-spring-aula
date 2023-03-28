@@ -1,0 +1,21 @@
+body, html, .App, #root, .content {
+    width: 100%;
+    height: 100%;
+}
+
+.content{}
+.top {
+    background-color: #f1f1f1;
+    height: 130px;
+    text-align: left;
+}
+.top img {
+    margin-left: 100px;
+}
+.middle{}
+.bottom {
+    background-color: #f1f1f1;
+    font-weight: bold;
+    height:100px;
+    text-align: center;
+}
